@@ -1,0 +1,6 @@
+# 生成的日报输出
+output/
+
+# Python
+__pycache__/
+*.py[cod]

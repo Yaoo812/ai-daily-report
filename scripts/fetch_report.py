@@ -6,7 +6,7 @@
 日期可省略，默认抓"昨日"(北京时间 UTC+8)。
 输出: report_data.json, AI日报_<日期>.md
 """
-import sys, json, re, html, gzip, subprocess, urllib.request, datetime, argparse
+import sys, os, json, re, html, gzip, subprocess, urllib.request, datetime, argparse
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -16,6 +16,8 @@ except Exception:
 
 HDR = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"}
 BJ = datetime.timezone(datetime.timedelta(hours=8))
+OUT_DIR = "output"  # 日报输出目录（相对仓库根目录，便携）
+os.makedirs(OUT_DIR, exist_ok=True)
 
 
 def http_json(url):
@@ -210,7 +212,7 @@ def main():
     args = ap.parse_args()
 
     if args.render_only:
-        with open("report_data.json", encoding="utf-8") as f:
+        with open(os.path.join(OUT_DIR, "report_data.json"), encoding="utf-8") as f:
             payload = json.load(f)
         write_markdown(payload)
         print("已根据 report_data.json 重写 Markdown（含今日看点）")
@@ -247,7 +249,7 @@ def main():
     now_bj = datetime.datetime.now(BJ).strftime("%Y-%m-%d %H:%M")
     payload = {"date": target.isoformat(), "generated_at": now_bj, "sources": sources}
     detect_duplicates(payload)
-    with open("report_data.json", "w", encoding="utf-8") as f:
+    with open(os.path.join(OUT_DIR, "report_data.json"), "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=1)
 
     write_markdown(payload)
@@ -282,7 +284,7 @@ def write_markdown(payload):
             dup = f"　🔁 多源报道{dup_map[a['dup']]}" if a.get("dup") else ""
             lines.append(f"| {a['time']} | [{a['title']}]({a['url']}){dup} |")
         lines.append("")
-    with open(f"AI日报_{payload['date']}.md", "w", encoding="utf-8") as f:
+    with open(os.path.join(OUT_DIR, f"AI日报_{payload['date']}.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
 

@@ -5,7 +5,7 @@
     PYTHONIOENCODING=utf-8 python gen_image.py
 输出: AI日报_<日期>.png
 """
-import sys, json
+import sys, os, json
 from PIL import Image, ImageDraw, ImageFont
 
 try:
@@ -13,7 +13,10 @@ try:
 except Exception:
     pass
 
-with open("report_data.json", encoding="utf-8") as f:
+OUT_DIR = "output"  # 日报输出目录（相对仓库根目录，便携）
+os.makedirs(OUT_DIR, exist_ok=True)
+
+with open(os.path.join(OUT_DIR, "report_data.json"), encoding="utf-8") as f:
     DATA = json.load(f)
 DATE = DATA["date"]  # "2026-10-24"
 SOURCES = DATA["sources"]
@@ -247,6 +250,6 @@ for s, plist in prep_sources:
 draw.rectangle([0, total_h - footer_h, W, total_h], fill=(236, 238, 243))
 draw.text((MARGIN, total_h - footer_h + 30), "日报 · zitong 整理", font=f_footer, fill=MUTED)
 
-out = f"AI日报_{DATE}.png"
+out = os.path.join(OUT_DIR, f"AI日报_{DATE}.png")
 img.save(out)
 print("saved:", out, "size:", img.size)

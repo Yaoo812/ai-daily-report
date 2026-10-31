@@ -5,6 +5,8 @@
 - **Markdown 文字版**：`AI日报_<日期>.md`
 - **竖版长图**：`AI日报_<日期>.png`（1080px 宽，可直接分享）
 
+所有生成结果统一写入 `output/` 子目录。
+
 ## 功能特性
 
 - 双源抓取（量子位 WordPress API + 机器之心 Rails API + sitemap 兜底）
@@ -23,6 +25,8 @@
 > 长图脚本目前硬编码使用 Windows 微软雅黑字体路径 `C:/Windows/Fonts/`，跨平台需自行替换字体路径。
 
 ## 使用
+
+> 生成结果（`report_data.json`、`AI日报_*.md`、`AI日报_*.png`）统一写入仓库根目录下的 `output/` 目录。
 
 ```bash
 # 抓取昨日（默认），写入 report_data.json 与 Markdown
@@ -46,6 +50,8 @@ PYTHONIOENCODING=utf-8 python scripts/gen_image.py
 ├── scripts/
 │   ├── fetch_report.py      # 抓取 + 去重 + 生成 Markdown
 │   └── gen_image.py         # 读取 report_data.json 生成竖版长图
+├── output/                  # 生成结果（日报 md/png、report_data.json），已 gitignore
+├── .gitignore
 └── README.md
 ```
 
