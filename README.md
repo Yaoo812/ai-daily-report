@@ -42,6 +42,13 @@ PYTHONIOENCODING=utf-8 python scripts/fetch_report.py --render-only
 PYTHONIOENCODING=utf-8 python scripts/gen_image.py
 ```
 
+## 示例
+
+仓库内置一份完整示例（2026-10-31 的日报），可预览实际输出效果：
+
+- [文字版 `AI日报_2026-10-31.md`](examples/AI日报_2026-10-31.md)
+- [图片版 `AI日报_2026-10-31.png`](examples/AI日报_2026-10-31.png)
+
 ## 目录结构
 
 ```
@@ -50,6 +57,7 @@ PYTHONIOENCODING=utf-8 python scripts/gen_image.py
 ├── scripts/
 │   ├── fetch_report.py      # 抓取 + 去重 + 生成 Markdown
 │   └── gen_image.py         # 读取 report_data.json 生成竖版长图
+├── examples/                # 示例：一份完整日报（md + png）
 ├── output/                  # 生成结果（日报 md/png、report_data.json），已 gitignore
 ├── .gitignore
 └── README.md
